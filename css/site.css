@@ -11,6 +11,8 @@
   --radius: 18px;
   --max: 1120px;
   --font: "IBM Plex Sans Arabic", "Segoe UI", sans-serif;
+  --display: "Amiri", "Playfair Display", serif;
+  --display-en: "Playfair Display", "Amiri", serif;
 }
 
 * { box-sizing: border-box; }
@@ -28,7 +30,19 @@ button, input, textarea { font: inherit; }
 
 html[lang="ar"] .en { display: none; }
 html[lang="en"] .ar { display: none; }
-html[lang="en"] body { font-family: "IBM Plex Sans Arabic", "Segoe UI", sans-serif; }
+html[lang="en"] body { font-family: var(--font); }
+h1, h2, .stat b, .stat-box b {
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+html[lang="en"] h1,
+html[lang="en"] h2,
+html[lang="en"] .stat b {
+  font-family: var(--display-en);
+  font-weight: 500;
+}
+h1 em { font-family: var(--display-en); font-style: italic; font-weight: 500; }
 
 .wrap { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
 .eyebrow {
@@ -256,4 +270,43 @@ footer h4 { color: #f7f3ec; margin: 0 0 12px; letter-spacing: 0.08em; font-size:
   .cards, .values, .mosaic, .stats { grid-template-columns: 1fr; }
   .stat { display: none; }
   .brand img { height: 52px; }
+}
+
+.card, .shot, .value, .service-block {
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.card:hover, .value:hover, .service-block:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+.hero-visual img { animation: floaty 7s ease-in-out infinite; }
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.petals {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+  overflow: hidden;
+}
+.petal {
+  position: absolute;
+  top: -48px;
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  opacity: 0.8;
+  animation: fall var(--dur) linear var(--delay) infinite;
+}
+.petal svg { width: 100%; height: 100%; display: block; }
+@keyframes fall {
+  0% { transform: translate3d(0, -12vh, 0) rotate(0deg); }
+  100% { transform: translate3d(var(--drift), 112vh, 0) rotate(var(--spin)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .petals, .hero-visual img { animation: none; display: none; }
+  .hero-visual img { display: block; }
 }
